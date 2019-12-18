@@ -3,6 +3,30 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: CreateSubscription
+// ====================================================
+
+export interface CreateSubscription_createSubscription {
+  __typename: "User";
+  id: string;
+  email: string;
+  stripeId: string | null;
+  type: string | null;
+}
+
+export interface CreateSubscription {
+  createSubscription: CreateSubscription_createSubscription | null;
+}
+
+export interface CreateSubscriptionVariables {
+  source: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: LoginMutation
 // ====================================================
 
