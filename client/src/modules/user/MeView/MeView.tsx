@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { MeQuery } from "../../../types/schemaTypes";
 
-const loginQuery = gql`
+export const loginQuery = gql`
     query MeQuery {
         me {
             id
@@ -23,9 +23,8 @@ export default (props: IProps)  => {
             const { me } = data;
             console.log("loginMutation success: ", data);
             if(me) {
-                alert("성공");
+
             } else {
-                alert("실패");
                 history.push("/login");
             }
         },

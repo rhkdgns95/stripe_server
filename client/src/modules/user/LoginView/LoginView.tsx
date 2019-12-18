@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo";
 import { LoginMutation, LoginMutationVariables } from "../../../types/schemaTypes";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 
 const useInput = (placeholder: string) => {
     const [value, setValue] = useState<string>("");
@@ -43,12 +43,15 @@ export default (props: IProps)  => {
     const { email, password } = useFetch();
 
     const [ loginMutation ] = useMutation<LoginMutation, LoginMutationVariables>(loginQuery, {
+        // refetchQueries: [
+        //     {query: loginQuery}
+        // ],
         onCompleted: data => {
             const { login } = data;
             console.log("loginMutation success: ", data);
             if(login) {
                 alert("성공");
-                history.push("/me");
+                history.push("/account");
             } else {
                 alert("실패");
             }
@@ -66,8 +69,8 @@ export default (props: IProps)  => {
             <div>
                 <input type={"password"} { ...password }/>
             </div>
-            <div>
-                <button onClick={e => {
+            <div style={{display: "flex", justifyContent: "space-around"}}>
+                <input type={"submit"} onClick={e => {
                     e.preventDefault();
                     loginMutation({ 
                         variables: {
@@ -75,7 +78,8 @@ export default (props: IProps)  => {
                             password: password.value
                         }
                     })
-                }}>register</button>
+                }} value={"Login"}/>
+                <Link to={"/register"}>Register</Link>
             </div>
         </form>
     );

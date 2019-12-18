@@ -3,6 +3,26 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Me
+// ====================================================
+
+export interface Me_me {
+  __typename: "User";
+  id: string;
+  email: string;
+  type: string | null;
+  stripeId: string | null;
+}
+
+export interface Me {
+  me: Me_me | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: CreateSubscription
 // ====================================================
 

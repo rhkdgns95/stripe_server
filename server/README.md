@@ -47,6 +47,10 @@
 2.6) Cors 설정
 : cleint단으로부터 apollo 서버에서 세션-쿠키에 대한 값을 요청시 cors에러를 방지하도록 해야한다. new ApolloServer({})로 생성된 객체 server에 다음을 추가
 : server.applyMiddleware({ app, cors: { credentials: true, origin: "http://localhost:3000" } })
+2.7) fetchPolicy
+: 새로운 로그인, 혹은 유저데이터 변경에 대해서 새로 refetch를 하고싶다면,
+: User프로필 가져오는 쿼리문에 fetchPolicy: "network-only"를 추가하도록 한다.
+
 
 ### 3. Stripe
 3.0) stripe private-key
@@ -61,6 +65,7 @@
     plan: process.env.STRIPE_PLAN_KEY || ""   //plan은 productId
  }; 
 : stripe.customers.create(stripeOptions);
+
 ### N. Etc
 N. tsconfig.json 설정 
 : 참고 https://github.com/benawad/fullstack-graphql-airbnb-clone/blob/master/packages/server/tsconfig.json

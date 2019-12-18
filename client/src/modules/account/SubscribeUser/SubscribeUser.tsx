@@ -24,6 +24,7 @@ export default () => {
             } else {
 
             }
+            
             console.log("createSubscription onCompleted: ", data);
         }, 
         onError: data => {
