@@ -5,7 +5,8 @@
 
 ## Todo
 - [x] Initial repository.
-- [] 
+- [x] Register, Login.
+- [x] Session Login express-session API, Me.
 
 
 ### 1. Install
@@ -16,6 +17,10 @@
 : 선택하여 버전을 업그레이드 해준다.
 1.3) yarn add apollo-server-express express express-session bcryptjs
 1.4) yarn add -D @types/express @types/bcryptjs @types/express-session @types/graphql
+1.5) yarn add stripe
+1.6) yarn add -D @types/stripe
+1.7) yarn add dev
+
 
 ### 2. Study
 2.0) typeorm init --name server --database postgres
@@ -39,7 +44,23 @@
 : 세션아이디를 쿠키에 저장하는방법이다.
 : Login할때, req.session.userId = user.id;  // cookies에 sessionId가 저장됨.
 : URL:4000/playground에서 emit -> include로 변경시켜야 확인 가능하다.
+2.6) Cors 설정
+: cleint단으로부터 apollo 서버에서 세션-쿠키에 대한 값을 요청시 cors에러를 방지하도록 해야한다. new ApolloServer({})로 생성된 객체 server에 다음을 추가
+: server.applyMiddleware({ app, cors: { credentials: true, origin: "http://localhost:3000" } })
 
+### 3. Stripe
+3.0) stripe private-key
+: stripe는 클라이언트측에 public key / 서버측에 secret_key를 소유하도록 한다.
+: 비밀키 암호방식으로 인증한다.
+3.1) Stripe 생성은 다음과같다.
+: 먼저 stripe 홈페이지에서 새로운 Product생성.
+: const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+: const stripeOptions = { 
+    email: user.email, 
+    source: "", 
+    plan: process.env.STRIPE_PLAN_KEY || ""   //plan은 productId
+ }; 
+: stripe.customers.create(stripeOptions);
 ### N. Etc
 N. tsconfig.json 설정 
 : 참고 https://github.com/benawad/fullstack-graphql-airbnb-clone/blob/master/packages/server/tsconfig.json

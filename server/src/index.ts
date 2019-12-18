@@ -1,6 +1,7 @@
 // import "reflect-metadata";
 // import {createConnection} from "typeorm";
 // import {User} from "./entity/User";
+import "dotenv/config";
 import { createConnection } from "typeorm";
 import * as session from "express-session";
 import { ApolloServer } from "apollo-server-express";
@@ -28,7 +29,6 @@ import * as express from "express";
 
  
 // Provide resolver functions for your schema fields
-
 const startServer = async () => {
     const server = new ApolloServer({ 
         typeDefs, 
@@ -47,7 +47,13 @@ const startServer = async () => {
     }));
 
     // const app = express();
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ 
+        app,
+        cors: {
+            credentials: true,
+            origin: "http://localhost:3000"
+        }
+     });
      
     app.listen({ port: 4000 }, () =>
       console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
