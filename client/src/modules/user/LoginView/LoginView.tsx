@@ -3,6 +3,8 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo";
 import { LoginMutation, LoginMutationVariables } from "../../../types/schemaTypes";
 import { RouteComponentProps, Link } from "react-router-dom";
+import { meQuery } from "../../../graphql/queries/me";
+import { userFragment } from "../../../graphql/fragments/userFragment";
 
 const useInput = (placeholder: string) => {
     const [value, setValue] = useState<string>("");
@@ -30,10 +32,10 @@ const useFetch = () => {
 const loginQuery = gql`
     mutation LoginMutation($email: String!, $password: String!) {
         login(email: $email, password: $password) {
-            id
-            email
+            ...UserInfo
         }
     }
+    ${userFragment}
 `;
 interface IProps extends RouteComponentProps<any>{
 
@@ -42,10 +44,20 @@ export default (props: IProps)  => {
     const { history } = props;
     const { email, password } = useFetch();
 
-    const [ loginMutation ] = useMutation<LoginMutation, LoginMutationVariables>(loginQuery, {
+    const [ loginMutation, { client } ] = useMutation<LoginMutation, LoginMutationVariables>(loginQuery, {
         // refetchQueries: [
         //     {query: loginQuery}
         // ],
+        update: (cache, { data }) => {
+             console.log("UPDATE: ", data);
+             if(!data || !data.login) {
+                 return;
+             }
+             cache.writeQuery({
+                 query: meQuery,
+                data: { me: data.login }
+             })
+        },
         onCompleted: data => {
             const { login } = data;
             console.log("loginMutation success: ", data);
@@ -62,7 +74,7 @@ export default (props: IProps)  => {
     });
 
     return (
-        <form style={{ display: "flex", flexFlow: "column", width: "100%", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ display: "flex", flexFlow: "column", width: "100%", alignItems: "center", justifyContent: "center" }}>
             <div>
                 <input type={"text"} { ...email }/>
             </div>
@@ -70,17 +82,18 @@ export default (props: IProps)  => {
                 <input type={"password"} { ...password }/>
             </div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
-                <input type={"submit"} onClick={e => {
-                    e.preventDefault();
+                <button onClick={async e => {
+                    // optional cache reset.
+                    await client?.resetStore();
                     loginMutation({ 
                         variables: {
                             email: email.value,
                             password: password.value
                         }
-                    })
-                }} value={"Login"}/>
+                    });
+                }}>login</button>
                 <Link to={"/register"}>Register</Link>
             </div>
-        </form>
+        </div>
     );
 };

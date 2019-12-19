@@ -43,9 +43,10 @@ export default (props: IProps)  => {
     const [ registerMutation ] = useMutation<registerMutation, registerMutationVariables>(registerQuery, {
         onCompleted: data => {
             const { register } = data;
-            console.log("registerMutation success: ", data);
+
             if(register) {
                 history.push("/login");
+                console.log("registerMutation success: ", data);
             }
         },
         onError: data => {

@@ -1,4 +1,3 @@
-
 import { IResolvers } from "apollo-server-express";
 import * as bcrypt from "bcryptjs";
 
@@ -74,7 +73,7 @@ export const resolvers: IResolvers = {
                 return null;
             };
         },
-        createSubscription: async (_, { source }, { req }): Promise<User | null> => {
+        createSubscription: async (_, { source, ccLast4 }, { req }): Promise<User | null> => {
             if(req.session && req.session.userId) {
                 const user: User | undefined = await User.findOne({
                     id: req.session.userId
@@ -88,7 +87,8 @@ export const resolvers: IResolvers = {
                     
                     user.stripeId = customer.id;
                     user.type = "paid";
-                    
+                    user.ccLast4 = ccLast4;
+
                     await user.save();
                     
                     return user;
@@ -99,6 +99,31 @@ export const resolvers: IResolvers = {
             } else {
                 // console.log("createSubscription No Authorized");
                 throw new Error("No authenticated");
+            }
+        },
+        changeCreditCard: async (_, { source, ccLast4 }, { req }): Promise<User | null> => {
+            const userId = req.session.userId;
+            if(userId) {
+                try {
+                    const user: User | undefined = await User.findOne({
+                        id: userId
+                    });
+                    if(user && user.stripeId && user.type === "paid") {
+                        await stripe.customers.update(user.stripeId, {
+                            source
+                        });
+                        user.ccLast4 = ccLast4;
+                        await user.save();
+                        return user;                        
+                    } else {
+                        console.log("changeCreditCard no user Or no register creditcard");
+                        return null;
+                    }
+                } catch(error) {
+                    return null;
+                }
+            } else {
+                throw new Error("changeCreditCard no authenticated");
             }
         }
     }

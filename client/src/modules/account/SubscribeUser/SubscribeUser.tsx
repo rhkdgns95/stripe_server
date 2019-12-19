@@ -3,17 +3,17 @@ import StripeCheckout, { Token } from "react-stripe-checkout";
 import { useMutation } from "react-apollo";
 import { gql } from "apollo-boost";
 import { CreateSubscription, CreateSubscriptionVariables } from "../../../types/schemaTypes";
-const STRIPE_KEY_TMP: string = "pk_test_AZWjyctSgrIe47FYHV3LQGlp00fJERaRig";
+import { userFragment } from "../../../graphql/fragments/userFragment";
+
+export const STRIPE_KEY_TMP: string = "pk_test_AZWjyctSgrIe47FYHV3LQGlp00fJERaRig";
 
 const createSubscriptionQuery = gql`
-    mutation CreateSubscription($source: String!) {
-        createSubscription(source: $source) {
-            id
-            email
-            stripeId
-            type
+    mutation CreateSubscription($source: String!, $ccLast4: String!) {
+        createSubscription(source: $source, ccLast4: $ccLast4) {
+            ...UserInfo
         }
     }
+    ${userFragment}
 `;
 
 export default () => {
@@ -32,11 +32,11 @@ export default () => {
         }
     });
     const onToken = (token: Token) => {
-        const { id, type } = token;
-        console.log("onToken: ", id, type);
+         const { id, card: { last4 }} = token;
         createSubscription({
             variables: {
-                source: id
+                source: id,
+                ccLast4: last4
             }
         });
     }

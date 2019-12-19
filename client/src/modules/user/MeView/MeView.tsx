@@ -3,22 +3,15 @@ import { gql } from "apollo-boost";
 import { RouteComponentProps } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { MeQuery } from "../../../types/schemaTypes";
+import { meQuery } from "../../../graphql/queries/me";
 
-export const loginQuery = gql`
-    query MeQuery {
-        me {
-            id
-            email
-        }
-    }
-`;
 interface IProps extends RouteComponentProps<any> {
 
 }
 export default (props: IProps)  => {
     const { history } = props;
 
-    const { data } = useQuery<MeQuery, any>(loginQuery, {
+    const { data } = useQuery<MeQuery, any>(meQuery, {
         onCompleted: data => {
             const { me } = data;
             console.log("loginMutation success: ", data);

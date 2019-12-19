@@ -2,12 +2,11 @@
 : React, Typescript, Grahpql - Using Stripe
 
 
-
 ## Todo
 - [x] Initial repository.
 - [x] Register, Login.
 - [x] Session Login express-session API, Me.
-
+- [x] createSubscription, changeCreditCard.
 
 ### 1. Install
 1.0) npm i -g typeorm

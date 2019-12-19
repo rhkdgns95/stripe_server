@@ -1,8 +1,9 @@
 # Stripe 
 
 ## Todo
-- [] React to Typescript.
-
+- [x] React to Typescript.
+- [x] Users - Login, Register
+- [x] Stripe - Create, Update
 
 
 ### 1. Install
