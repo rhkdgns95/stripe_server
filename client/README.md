@@ -4,7 +4,7 @@
 - [x] React to Typescript.
 - [x] Users - Login, Register
 - [x] Stripe - Create, Update
-
+- [x] Stripe - Cancel - reCreate
 
 ### 1. Install
 1.1) yarn create react-app client --template typescript

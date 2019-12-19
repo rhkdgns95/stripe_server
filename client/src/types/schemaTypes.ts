@@ -23,6 +23,26 @@ export interface MeQuery {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: CancelSubscription
+// ====================================================
+
+export interface CancelSubscription_cancelSubscription {
+  __typename: "User";
+  id: string;
+  email: string;
+  type: string;
+  ccLast4: string | null;
+}
+
+export interface CancelSubscription {
+  cancelSubscription: CancelSubscription_cancelSubscription | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: ChangeCreditCard
 // ====================================================
 

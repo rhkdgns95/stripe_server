@@ -4,7 +4,7 @@ import { userFragment } from "../fragments/userFragment";
 export const meQuery = gql`
     query MeQuery {
         me {
-            ...UserInfo
+            ...UserInfo 
         }
     }
     ${userFragment}

@@ -44,6 +44,7 @@ export default () => {
         <StripeCheckout
             token={onToken}
             stripeKey={process.env.STRIPE_PUBLIC_KEY || STRIPE_KEY_TMP}
+            amount={10000}
         />
     );
 }

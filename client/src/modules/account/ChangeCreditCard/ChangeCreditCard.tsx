@@ -49,6 +49,10 @@ export default () => {
         <StripeCheckout 
             stripeKey={STRIPE_KEY_TMP}
             token={handleChangeCreditCard}
-        /> 
+            panelLabel="Change Card"
+        >
+            <button className={"btn btn-primary"}>Change credit card</button>
+        </StripeCheckout>
+
     );
 };
